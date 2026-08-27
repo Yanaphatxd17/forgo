@@ -241,7 +241,7 @@ body {
     font-size: 1.1rem;
 }
 
-/* History Grid & Interactive Topic Cards */
+/* History Grid & Interactive Topic Cards with Real Images */
 .history-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -258,7 +258,7 @@ body {
     background: var(--bg-card);
     border: 1px solid var(--border-card);
     border-radius: 20px;
-    padding: 2rem;
+    overflow: hidden;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     display: flex;
@@ -272,6 +272,32 @@ body {
     box-shadow: 0 15px 35px var(--primary-glow);
 }
 
+.topic-card-img-wrapper {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border-card);
+}
+
+.topic-card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.topic-card:hover .topic-card-img-wrapper img {
+    transform: scale(1.06);
+}
+
+.history-card-body {
+    padding: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
 .history-card-header {
     display: flex;
     align-items: center;
@@ -280,9 +306,9 @@ body {
 }
 
 .history-card-icon {
-    font-size: 2rem;
-    width: 50px;
-    height: 50px;
+    font-size: 1.8rem;
+    width: 44px;
+    height: 44px;
     background: rgba(16, 185, 129, 0.1);
     border-radius: 12px;
     display: flex;
@@ -292,15 +318,16 @@ body {
 }
 
 .history-card h3 {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     color: #ffffff;
+    line-height: 1.4;
 }
 
 .history-card p {
     color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.7;
-    margin-bottom: 1rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
 }
 
 .card-action-btn {
@@ -319,7 +346,7 @@ body {
     text-shadow: 0 0 10px var(--primary-glow);
 }
 
-/* Subdistricts Grid */
+/* Subdistricts Grid with Real Images */
 .subdistricts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -329,8 +356,8 @@ body {
 .subdistrict-card {
     background: var(--bg-card);
     border: 1px solid var(--border-card);
-    border-radius: 16px;
-    padding: 1.8rem;
+    border-radius: 20px;
+    overflow: hidden;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -343,21 +370,33 @@ body {
     box-shadow: 0 12px 30px var(--accent-glow);
 }
 
+.subdistrict-card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.subdistrict-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
 .subdistrict-card .icon {
-    font-size: 2.2rem;
-    display: block;
-    margin-bottom: 1rem;
+    font-size: 1.8rem;
 }
 
 .subdistrict-card h3 {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     color: #ffffff;
-    margin-bottom: 0.5rem;
 }
 
 .subdistrict-card p {
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
     margin-bottom: 1rem;
 }
 

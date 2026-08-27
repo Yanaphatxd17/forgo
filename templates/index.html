@@ -80,13 +80,19 @@
                  data-full-history="{{ item.full_history }}" 
                  data-image="{% static 'images/' %}{{ item.image }}" 
                  data-highlights="{% for h in item.highlights %}{{ h }}{% if not forloop.last %}||{% endif %}{% endfor %}">
-                <div class="history-card-header">
-                    <div class="history-card-icon">{{ item.icon }}</div>
-                    <h3>{{ item.title }}</h3>
+                <div class="topic-card-img-wrapper">
+                    <img src="{% static 'images/' %}{{ item.image }}" alt="{{ item.title }}">
+                    <span class="real-photo-badge">📍 อ.ยางชุมน้อย</span>
                 </div>
-                <p>{{ item.detail }}</p>
-                <div class="card-action-btn">
-                    <span>📖 กดเพื่ออ่านประวัติเจาะลึกเพิ่มเติม &rarr;</span>
+                <div class="history-card-body">
+                    <div class="history-card-header">
+                        <div class="history-card-icon">{{ item.icon }}</div>
+                        <h3>{{ item.title }}</h3>
+                    </div>
+                    <p>{{ item.detail }}</p>
+                    <div class="card-action-btn">
+                        <span>📖 กดเพื่ออ่านประวัติเจาะลึกเพิ่มเติม &rarr;</span>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -126,13 +132,19 @@
                  data-full-history="{{ sub.full_history }}" 
                  data-image="{% static 'images/' %}{{ sub.image }}" 
                  data-highlights="{% for l in sub.landmarks %}{{ l }}{% if not forloop.last %}||{% endif %}{% endfor %}">
-                <div>
-                    <span class="icon">{{ sub.icon }}</span>
-                    <h3>{{ sub.name }}</h3>
-                    <p>{{ sub.desc }}</p>
+                <div class="topic-card-img-wrapper">
+                    <img src="{% static 'images/' %}{{ sub.image }}" alt="{{ sub.name }}">
+                    <span class="real-photo-badge">📍 {{ sub.name }}</span>
                 </div>
-                <div class="card-action-btn" style="margin-top: 1rem; color: var(--accent);">
-                    <span>📌 กดอ่านประวัติและจุดเด่นตำบล &rarr;</span>
+                <div class="subdistrict-card-body">
+                    <div class="subdistrict-card-header">
+                        <span class="icon">{{ sub.icon }}</span>
+                        <h3>{{ sub.name }}</h3>
+                    </div>
+                    <p>{{ sub.desc }}</p>
+                    <div class="card-action-btn" style="margin-top: 1rem; color: var(--accent);">
+                        <span>📌 กดอ่านประวัติและจุดเด่นตำบล &rarr;</span>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -151,7 +163,6 @@
             <button class="filter-btn" data-filter="สถานที่ท่องเที่ยว & วัดสำคัญ">สถานที่ท่องเที่ยว & วัดสำคัญ</button>
             <button class="filter-btn" data-filter="สินค้า GI & เศรษฐกิจ">สินค้า GI & เศรษฐกิจ</button>
             <button class="filter-btn" data-filter="ประเพณีท้องถิ่น">ประเพณีท้องถิ่น</button>
-
             <button class="filter-btn" data-filter="ภูมิศาสตร์ & แผนที่">ภูมิศาสตร์ & แผนที่</button>
         </div>
 
