@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <meta name="description" content="โมเดลนิทรรศการดิจิทัลและคลังภาพความละเอียดสูง อำเภอยางชุมน้อย จังหวัดศรีสะเกษ ประวัติความเป็นมา 7 ตำบล และถิ่นหอมแดง">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="brand">
+            <div class="brand-icon">🧅</div>
+            <span>อำเภอยางชุมน้อย</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#hero">หน้าหลัก</a></li>
+            <li><a href="#3d-model">โมเดล 3D</a></li>
+            <li><a href="#history">ประวัติความเป็นมา</a></li>
+            <li><a href="#subdistricts">7 ตำบล</a></li>
+            <li><a href="#gallery">คลังภาพถ่าย</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">
+                <span>📍 จังหวัดศรีสะเกษ | Isan Thailand</span>
+            </div>
+            <h1>อำเภอยางชุมน้อย<br><span style="font-size: 2.2rem; color: var(--primary);">Digital 3D Showcase & History</span></h1>
+            <p class="hero-slogan">"{{ slogan }}"</p>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">
+                ยินดีต้อนรับสู่โมเดลนิทรรศการดิจิทัลรวบรวมประวัติความเป็นมา ภูมิศาสตร์ 7 ตำบล และคลังภาพความละเอียดสูงของอำเภอยางชุมน้อย ดินแดนแห่งป่ายางนาอันอุดมสมบูรณ์และเมืองหลวงหอมแดงของประเทศไทย
+            </p>
+            <div class="hero-btns">
+                <a href="#gallery" class="btn btn-primary">📸 ชมคลังภาพถ่าย (Gallery)</a>
+                <a href="#history" class="btn btn-outline">📜 อ่านประวัติความเป็นมา</a>
+            </div>
+        </div>
+
+        <!-- 3D Interactive Card Showcase -->
+        <div class="hero-visual" id="3d-model">
+            <div class="card-3d-wrapper" id="card3d">
+                <img src="{% static 'images/yang_chum_noi_3d_emblem_model_1787835707727.jpg' %}" alt="แบบจำลอง 3D อำเภอยางชุมน้อย" class="card-3d-image">
+                <div class="card-3d-badge">
+                    <div class="card-3d-badge-info">
+                        <h4>โมเดลดิจิทัล 3D อำเภอยางชุมน้อย</h4>
+                        <p>Yang Chum Noi Digital Isometric Model</p>
+                    </div>
+                    <span style="background: rgba(16, 185, 129, 0.2); color: var(--primary); padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 0.85rem;">3D Interactive</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Timeline Section -->
+    <section id="history" class="section">
+        <div class="section-header">
+            <h2>ประวัติความเป็นมา</h2>
+            <p>ย้อนรอยประวัติศาสตร์การตั้งถิ่นฐาน จากป่ายางนาริมฝั่งแม่น้ำมูล สู่การจัดตั้งกิ่งอำเภอ พ.ศ. 2514 และอำเภอยางชุมน้อย พ.ศ. 2522</p>
+        </div>
+
+        <div class="timeline">
+            {% for item in timeline %}
+            <div class="timeline-item">
+                <div class="timeline-dot">📜</div>
+                <div class="timeline-card">
+                    <span class="timeline-year">{{ item.year }}</span>
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.detail }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- 7 Subdistricts Section -->
+    <section id="subdistricts" class="section">
+        <div class="section-header">
+            <h2>เขตการปกครอง 7 ตำบล</h2>
+            <p>อำเภอยางชุมน้อยแบ่งเขตการปกครองออกเป็น 7 ตำบล ครอบคลุมพื้นที่เกษตรกรรมและแม่น้ำมูล</p>
+        </div>
+
+        <div class="subdistricts-grid">
+            {% for sub in subdistricts %}
+            <div class="subdistrict-card">
+                <span class="icon">{{ sub.icon }}</span>
+                <h3>{{ sub.name }}</h3>
+                <p>{{ sub.desc }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section id="gallery" class="section">
+        <div class="section-header">
+            <h2>คลังภาพถ่ายอำเภอยางชุมน้อย</h2>
+            <p>รวมภาพความละเอียดสูงจำลองวิถีชีวิต ทัศนียภาพ ทุ่งหอมแดง วัดวาอาราม และประเพณีท้องถิ่น</p>
+        </div>
+
+        <div class="gallery-filter">
+            <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+            <button class="filter-btn" data-filter="เกษตรกรรม">เกษตรกรรม</button>
+            <button class="filter-btn" data-filter="ธรรมชาติ & ที่มาของชื่อ">ธรรมชาติ & ที่มาของชื่อ</button>
+            <button class="filter-btn" data-filter="ศาสนา & วัฒนธรรม">ศาสนา & วัฒนธรรม</button>
+            <button class="filter-btn" data-filter="ประเพณีท้องถิ่น">ประเพณีท้องถิ่น</button>
+            <button class="filter-btn" data-filter="สินค้าขึ้นชื่อ">สินค้าขึ้นชื่อ</button>
+            <button class="filter-btn" data-filter="โมเดลจำลอง 3D">โมเดลจำลอง 3D</button>
+        </div>
+
+        <div class="gallery-grid">
+            {% for img in images %}
+            <div class="gallery-card" data-category="{{ img.category }}">
+                <div class="gallery-img-wrapper">
+                    <img src="{% static 'images/' %}{{ img.filename }}" alt="{{ img.title }}">
+                </div>
+                <div class="gallery-card-body">
+                    <span class="gallery-category">{{ img.category }}</span>
+                    <h3>{{ img.title }}</h3>
+                    <p>{{ img.caption }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <img src="" alt="" class="modal-img" id="modalImg">
+            <div class="modal-info">
+                <h3 id="modalTitle"></h3>
+                <p id="modalCaption"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>อำเภอยางชุมน้อย (Yang Chum Noi District)</strong> | จังหวัดศรีสะเกษ</p>
+        <p style="font-size: 0.9rem;">"ยางชุมน้อย แดนคนขยัน หมั่นทำกิน ถิ่นหอมแดง แหล่งกระเทียมโทน"</p>
+        <p style="font-size: 0.8rem; margin-top: 1rem; color: #64748b;">© 2026 Yang Chum Noi Digital Showcase Model. All Rights Reserved.</p>
+    </footer>
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>
