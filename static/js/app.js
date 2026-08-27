@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lightbox Modal
-    const modal = document.getElementById('imageModal');
+    // Gallery Lightbox Modal
+    const imageModal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImg');
     const modalTitle = document.getElementById('modalTitle');
     const modalCaption = document.getElementById('modalCaption');
@@ -64,23 +64,73 @@ document.addEventListener('DOMContentLoaded', () => {
             const title = card.querySelector('h3').innerText;
             const caption = card.querySelector('p').innerText;
 
-            modalImg.src = img;
-            modalTitle.innerText = title;
-            modalCaption.innerText = caption;
-            modal.classList.add('active');
+            if (modalImg) modalImg.src = img;
+            if (modalTitle) modalTitle.innerText = title;
+            if (modalCaption) modalCaption.innerText = caption;
+            if (imageModal) imageModal.classList.add('active');
         });
     });
 
-    if (modalClose) {
+    if (modalClose && imageModal) {
         modalClose.addEventListener('click', () => {
-            modal.classList.remove('active');
+            imageModal.classList.remove('active');
+        });
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.classList.remove('active');
+            }
         });
     }
 
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
+    // Interactive Topic History Modal (Click to View Detailed Topic History)
+    const topicModal = document.getElementById('topicDetailModal');
+    const topicModalClose = document.getElementById('topicModalClose');
+    const topicIcon = document.getElementById('topicIcon');
+    const topicTitle = document.getElementById('topicTitle');
+    const topicImg = document.getElementById('topicImg');
+    const topicFullHistory = document.getElementById('topicFullHistory');
+    const topicHighlightsList = document.getElementById('topicHighlightsList');
+
+    const topicCards = document.querySelectorAll('.topic-card');
+
+    topicCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const title = card.getAttribute('data-title') || '';
+            const icon = card.getAttribute('data-icon') || '📜';
+            const fullHistory = card.getAttribute('data-full-history') || '';
+            const image = card.getAttribute('data-image') || '';
+            const rawHighlights = card.getAttribute('data-highlights') || '';
+
+            if (topicIcon) topicIcon.innerText = icon;
+            if (topicTitle) topicTitle.innerText = title;
+            if (topicImg) topicImg.src = image;
+            if (topicFullHistory) topicFullHistory.innerText = fullHistory;
+
+            if (topicHighlightsList) {
+                topicHighlightsList.innerHTML = '';
+                if (rawHighlights) {
+                    const items = rawHighlights.split('||');
+                    items.forEach(itemText => {
+                        if (itemText.trim()) {
+                            const li = document.createElement('li');
+                            li.innerText = itemText.trim();
+                            topicHighlightsList.appendChild(li);
+                        }
+                    });
+                }
+            }
+
+            if (topicModal) topicModal.classList.add('active');
+        });
+    });
+
+    if (topicModalClose && topicModal) {
+        topicModalClose.addEventListener('click', () => {
+            topicModal.classList.remove('active');
+        });
+        topicModal.addEventListener('click', (e) => {
+            if (e.target === topicModal) {
+                topicModal.classList.remove('active');
             }
         });
     }
