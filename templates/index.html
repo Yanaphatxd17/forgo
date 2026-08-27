@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
-    <meta name="description" content="โมเดลนิทรรศการดิจิทัลและคลังภาพความละเอียดสูง อำเภอยางชุมน้อย จังหวัดศรีสะเกษ ประวัติความเป็นมา 7 ตำบล และถิ่นหอมแดง">
+    <meta name="description" content="โมเดลนิทรรศการดิจิทัลและคลังภาพสถานที่ท่องเที่ยว ประวัติศาสตร์ วัดโพธิ์ชัยศรี หาดบ้านลิ้นฟ้า อำเภอยางชุมน้อย จังหวัดศรีสะเกษ">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -18,10 +18,10 @@
         </a>
         <ul class="nav-links">
             <li><a href="#hero">หน้าหลัก</a></li>
-            <li><a href="#3d-model">โมเดล 3D</a></li>
+            <li><a href="#3d-model">แผนที่ & ตราอำเภอ</a></li>
             <li><a href="#history">ประวัติความเป็นมา</a></li>
             <li><a href="#subdistricts">7 ตำบล</a></li>
-            <li><a href="#gallery">คลังภาพถ่ายจริง</a></li>
+            <li><a href="#gallery">สถานที่ท่องเที่ยว & คลังภาพจริง</a></li>
         </ul>
     </nav>
 
@@ -29,29 +29,36 @@
     <section id="hero" class="hero">
         <div class="hero-content">
             <div class="hero-tag">
-                <span>📍 จังหวัดศรีสะเกษ | Isan Thailand</span>
+                <span>📍 อำเภอยางชุมน้อย | จังหวัดศรีสะเกษ</span>
             </div>
             <h1>อำเภอยางชุมน้อย<br><span style="font-size: 2.2rem; color: var(--primary);">Digital 3D Showcase & History</span></h1>
             <p class="hero-slogan">"{{ slogan }}"</p>
             <p style="color: var(--text-muted); margin-bottom: 2rem;">
-                ยินดีต้อนรับสู่โมเดลนิทรรศการดิจิทัลรวบรวมประวัติความเป็นมา ภูมิศาสตร์ 7 ตำบล และคลังภาพถ่ายจริงของอำเภอยางชุมน้อย ดินแดนแห่งป่ายางนาอันอุดมสมบูรณ์และเมืองหลวงหอมแดง GI ของประเทศไทย
+                ยินดีต้อนรับสู่นิทรรศการดิจิทัลรวบรวมประวัติศาสตร์ สถานที่ท่องเที่ยวสำคัญ อาทิ วัดโพธิ์ชัยศรี (ศาลาปี 2485), หาดบ้านลิ้นฟ้า ริมแม่น้ำมูล, วัดกุดเมืองฮาม (สร้าง พ.ศ. 2327), ตลาดกลางหอมแดง GI และภูมิศาสตร์ 7 ตำบลของอำเภอยางชุมน้อย
             </p>
             <div class="hero-btns">
-                <a href="#gallery" class="btn btn-primary">📸 ชมคลังภาพถ่ายจริง (Gallery)</a>
+                <a href="#gallery" class="btn btn-primary">📸 เที่ยวชมสถานที่ท่องเที่ยวจริง (Gallery)</a>
                 <a href="#history" class="btn btn-outline">📜 อ่านประวัติความเป็นมา</a>
             </div>
         </div>
 
-        <!-- 3D Interactive Card Showcase -->
+        <!-- 3D Interactive Card Showcase: Official Map & Seal -->
         <div class="hero-visual" id="3d-model">
-            <div class="card-3d-wrapper" id="card3d">
-                <img src="{% static 'images/real_shallot_field.jpg' %}" alt="แบบจำลองและภาพถ่ายอำเภอยางชุมน้อย" class="card-3d-image">
-                <div class="card-3d-badge">
-                    <div class="card-3d-badge-info">
-                        <h4>อำเภอยางชุมน้อย ศรีสะเกษ</h4>
-                        <p>Yang Chum Noi Digital Isometric Showcase</p>
+            <div class="card-3d-wrapper" id="card3d" style="background: rgba(15, 23, 42, 0.9); padding: 1.5rem; text-align: center;">
+                <div style="display: flex; gap: 1rem; align-items: center; justify-content: center; margin-bottom: 1rem;">
+                    <img src="{% static 'images/' %}{{ seal_image }}" alt="ตราประจำจังหวัดศรีสะเกษ" style="height: 70px; width: auto;">
+                    <div style="text-align: left;">
+                        <h4 style="color: var(--primary); font-size: 1.2rem; margin: 0;">อำเภอยางชุมน้อย</h4>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">จังหวัดศรีสะเกษ (Geocode 3302)</p>
                     </div>
-                    <span style="background: rgba(16, 185, 129, 0.2); color: var(--primary); padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 0.85rem;">📸 ภาพถ่ายจริง</span>
+                </div>
+                <img src="{% static 'images/' %}{{ map_image }}" alt="แผนที่เขตการปกครอง อำเภอยางชุมน้อย" class="card-3d-image" style="height: 300px; object-fit: contain; background: #ffffff; padding: 10px; border-radius: 16px;">
+                <div class="card-3d-badge" style="position: relative; background: transparent; padding: 1rem 0 0 0;">
+                    <div class="card-3d-badge-info" style="text-align: left;">
+                        <h4>แผนที่เขตการปกครอง 7 ตำบล</h4>
+                        <p>Yang Chum Noi Official Administrative Map</p>
+                    </div>
+                    <span style="background: rgba(16, 185, 129, 0.2); color: var(--primary); padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 0.85rem;">🗺️ แผนที่ทางการ</span>
                 </div>
             </div>
         </div>
@@ -60,8 +67,8 @@
     <!-- Detailed History Section -->
     <section id="history" class="section">
         <div class="section-header">
-            <h2>ประวัติความเป็นมาและอัตลักษณ์เจาะลึก</h2>
-            <p>ย้อนรอยประวัติศาสตร์การตั้งถิ่นฐาน จากป่ายางนาริมฝั่งแม่น้ำมูล สู่การเป็นมหานครหอมแดง GI (กดที่แต่ละหัวข้อเพื่ออ่านประวัติเจาะลึก)</p>
+            <h2>ประวัติความเป็นมาและสถานที่สำคัญเจาะลึก</h2>
+            <p>รวมเรื่องราวประวัติศาสตร์ วัดโบราณ แม่น้ำมูล และสถานที่สำคัญของอำเภอยางชุมน้อย (กดที่แต่ละหัวข้อเพื่ออ่านประวัติเจาะลึก)</p>
         </div>
 
         <!-- History Highlights Grid -->
@@ -87,7 +94,7 @@
 
         <!-- Timeline -->
         <div class="section-header" style="margin-top: 3rem; margin-bottom: 3rem;">
-            <h3 style="font-size: 1.8rem; color: var(--primary);">ลำดับเหตุการณ์ประวัติศาสตร์ (Timeline)</h3>
+            <h3 style="font-size: 1.8rem; color: var(--primary);">ลำดับเหตุการณ์ประวัติศาสตร์อำเภอยางชุมน้อย (Timeline)</h3>
         </div>
 
         <div class="timeline">
@@ -107,8 +114,8 @@
     <!-- 7 Subdistricts Section -->
     <section id="subdistricts" class="section">
         <div class="section-header">
-            <h2>เขตการปกครอง 7 ตำบล</h2>
-            <p>อำเภอยางชุมน้อยแบ่งเขตการปกครองออกเป็น 7 ตำบล ครอบคลุมพื้นที่เกษตรกรรม ดินทรายมูล และลำน้ำมูล (กดที่ตำบลเพื่ออ่านประวัติเจาะลึก)</p>
+            <h2>เขตการปกครอง 7 ตำบลในอำเภอยางชุมน้อย</h2>
+            <p>ข้อมูลสถานที่สำคัญ ประวัติศาสตร์ และจุดเด่นของทั้ง 7 ตำบล (กดที่ตำบลเพื่ออ่านประวัติเจาะลึก)</p>
         </div>
 
         <div class="subdistricts-grid">
@@ -135,17 +142,17 @@
     <!-- Photo Gallery Section -->
     <section id="gallery" class="section">
         <div class="section-header">
-            <h2>คลังภาพถ่ายจริงอำเภอยางชุมน้อย</h2>
-            <p>รวมภาพถ่ายจริงความละเอียดสูง สะท้อนวิถีชีวิต ทุ่งหอมแดง GI ลุ่มน้ำมูล วัดวาอาราม ประเพณี และสินค้าขึ้นชื่อ</p>
+            <h2>คลังภาพสถานที่ท่องเที่ยวจริง อำเภอยางชุมน้อย</h2>
+            <p>รวมภาพจริงของสถานที่สำคัญ วัดโพธิ์ชัยศรี หาดบ้านลิ้นฟ้า วัดกุดเมืองฮาม ตลาดหอมแดง GI และอ่างเก็บน้ำบึงบอน</p>
         </div>
 
         <div class="gallery-filter">
             <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
-            <button class="filter-btn" data-filter="เกษตรกรรม">เกษตรกรรม</button>
-            <button class="filter-btn" data-filter="ธรรมชาติ & ที่มาของชื่อ">ธรรมชาติ & ที่มาของชื่อ</button>
-            <button class="filter-btn" data-filter="ศาสนา & วัฒนธรรม">ศาสนา & วัฒนธรรม</button>
+            <button class="filter-btn" data-filter="สถานที่ท่องเที่ยว & วัดสำคัญ">สถานที่ท่องเที่ยว & วัดสำคัญ</button>
+            <button class="filter-btn" data-filter="สินค้า GI & เศรษฐกิจ">สินค้า GI & เศรษฐกิจ</button>
             <button class="filter-btn" data-filter="ประเพณีท้องถิ่น">ประเพณีท้องถิ่น</button>
-            <button class="filter-btn" data-filter="สินค้าขึ้นชื่อ">สินค้าขึ้นชื่อ</button>
+
+            <button class="filter-btn" data-filter="ภูมิศาสตร์ & แผนที่">ภูมิศาสตร์ & แผนที่</button>
         </div>
 
         <div class="gallery-grid">
@@ -153,7 +160,7 @@
             <div class="gallery-card" data-category="{{ img.category }}">
                 <div class="gallery-img-wrapper">
                     <img src="{% static 'images/' %}{{ img.filename }}" alt="{{ img.title }}">
-                    <span class="real-photo-badge">📸 ภาพถ่ายจริง</span>
+                    <span class="real-photo-badge">📍 อ.ยางชุมน้อย</span>
                 </div>
                 <div class="gallery-card-body">
                     <span class="gallery-category">{{ img.category }}</span>
@@ -173,7 +180,7 @@
                 <div class="topic-modal-icon" id="topicIcon">📜</div>
                 <div>
                     <h3 id="topicTitle">ประวัติเจาะลึก</h3>
-                    <span class="topic-badge">📜 นิทรรศการประวัติศาสตร์อำเภอยางชุมน้อย</span>
+                    <span class="topic-badge">📍 นิทรรศการประวัติศาสตร์และสถานที่สำคัญ อำเภอยางชุมน้อย</span>
                 </div>
             </div>
             <div class="topic-modal-body">
@@ -181,7 +188,7 @@
                     <img src="" alt="" id="topicImg">
                 </div>
                 <div class="topic-modal-text">
-                    <h4>ความเป็นมาและเรื่องราวเจาะลึก</h4>
+                    <h4>ความเป็นมาและสถานที่สำคัญ</h4>
                     <p id="topicFullHistory"></p>
                     <div class="topic-highlights-box">
                         <h4>จุดเด่นและสถานที่สำคัญ</h4>
