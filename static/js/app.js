@@ -91,8 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const utterance = new SpeechSynthesisUtterance(chunks[chunkIndex]);
             utterance.lang = 'th-TH';
-            utterance.rate = 0.72;
-            utterance.pitch = 1.12;
+            utterance.rate = 0.9;
+            utterance.pitch = 1.18;
             utterance.volume = 1;
 
             if (voice) {
@@ -100,9 +100,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (voice && /th|thai/i.test(voice.lang || voice.name)) {
-                utterance.rate = 0.7;
-                utterance.pitch = 1.15;
+                utterance.rate = 0.88;
+                utterance.pitch = 1.2;
             }
+
+            utterance.onboundary = () => {
+                if (speechSynthesis && speechSynthesis.paused) {
+                    speechSynthesis.resume();
+                }
+            };
 
             utterance.onend = () => {
                 chunkIndex += 1;
