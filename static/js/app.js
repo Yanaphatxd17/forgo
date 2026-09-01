@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const topicSpeakBtn = document.getElementById('topicSpeakBtn');
     let activeSpeechButton = null;
     let lastSpeechTimer = null;
+    let speechSessionToken = 0;
 
     function setSpeechButtonState(button, isSpeaking) {
         if (!button) return;
@@ -24,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function stopSpeech() {
+        speechSessionToken += 1;
+
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
         }
@@ -76,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setSpeechButtonState(activeSpeechButton, false);
         }
 
+        const sessionToken = ++speechSessionToken;
         activeSpeechButton = button || null;
         window.speechSynthesis.cancel();
 
@@ -83,6 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let chunkIndex = 0;
 
         const playNextChunk = () => {
+            if (sessionToken !== speechSessionToken) {
+                return;
+            }
+
             if (chunkIndex >= chunks.length) {
                 if (button) setSpeechButtonState(button, false);
                 activeSpeechButton = null;
@@ -111,11 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             utterance.onend = () => {
+                if (sessionToken !== speechSessionToken) {
+                    return;
+                }
                 chunkIndex += 1;
                 playNextChunk();
             };
 
             utterance.onerror = () => {
+                if (sessionToken !== speechSessionToken) {
+                    return;
+                }
                 chunkIndex += 1;
                 playNextChunk();
             };
