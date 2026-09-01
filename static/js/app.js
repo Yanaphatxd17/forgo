@@ -37,6 +37,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function buildSpeechChunks(text) {
+        const cleaned = text.replace(/\s+/g, ' ').trim();
+        const sentences = cleaned.split(/(?<=[.!?])\s+/).filter(Boolean);
+        const chunks = [];
+        let current = '';
+
+        sentences.forEach(sentence => {
+            const candidate = current ? `${current} ${sentence}` : sentence;
+            if (candidate.length <= 180) {
+                current = candidate;
+            } else {
+                if (current) chunks.push(current);
+                const parts = sentence.match(/.{1,160}/g) || [sentence];
+                current = parts.join(' ');
+            }
+        });
+
+        if (current) chunks.push(current);
+        return chunks.length ? chunks : [cleaned];
+    }
+
     function speakTopicText(title, fullHistory, rawHighlights, button) {
         if (!('speechSynthesis' in window)) {
             alert('เบราว์เซอร์นี้ไม่รองรับข้อความอ่านเสียง AI กรุณาใช้ Chrome หรือ Edge');
@@ -56,46 +77,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         activeSpeechButton = button || null;
-
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'th-TH';
-        utterance.rate = 0.82;
-        utterance.pitch = 1.1;
-        utterance.volume = 1;
 
-        if (voice) {
-            utterance.voice = voice;
-        }
+        const chunks = buildSpeechChunks(text);
+        let chunkIndex = 0;
 
-        if (voice && /th|thai/i.test(voice.lang || voice.name)) {
-            utterance.rate = 0.78;
-            utterance.pitch = 1.15;
-        }
-
-        if (button) {
-            setSpeechButtonState(button, true);
-        }
-
-        window.speechSynthesis.speak(utterance);
-
-        utterance.onend = () => {
-            if (button) {
-                setSpeechButtonState(button, false);
-            }
-            if (activeSpeechButton === button) {
+        const playNextChunk = () => {
+            if (chunkIndex >= chunks.length) {
+                if (button) setSpeechButtonState(button, false);
                 activeSpeechButton = null;
+                return;
             }
+
+            const utterance = new SpeechSynthesisUtterance(chunks[chunkIndex]);
+            utterance.lang = 'th-TH';
+            utterance.rate = 0.72;
+            utterance.pitch = 1.12;
+            utterance.volume = 1;
+
+            if (voice) {
+                utterance.voice = voice;
+            }
+
+            if (voice && /th|thai/i.test(voice.lang || voice.name)) {
+                utterance.rate = 0.7;
+                utterance.pitch = 1.15;
+            }
+
+            utterance.onend = () => {
+                chunkIndex += 1;
+                playNextChunk();
+            };
+
+            utterance.onerror = () => {
+                chunkIndex += 1;
+                playNextChunk();
+            };
+
+            if (button) {
+                setSpeechButtonState(button, true);
+            }
+
+            window.speechSynthesis.speak(utterance);
         };
 
-        utterance.onerror = () => {
-            if (button) {
-                setSpeechButtonState(button, false);
-            }
-            if (activeSpeechButton === button) {
-                activeSpeechButton = null;
-            }
-        };
+        playNextChunk();
     }
 
     speakButtons.forEach(button => {
