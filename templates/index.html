@@ -90,6 +90,14 @@
                         <h3>{{ item.title }}</h3>
                     </div>
                     <p>{{ item.detail }}</p>
+                    <div class="topic-card-actions">
+                        <button class="ai-speech-btn" type="button"
+                                data-title="{{ item.title }}"
+                                data-full-history="{{ item.full_history }}"
+                                data-highlights="{% for h in item.highlights %}{{ h }}{% if not forloop.last %}||{% endif %}{% endfor %}">
+                            🤖 AI พูด
+                        </button>
+                    </div>
                     <div class="card-action-btn">
                         <span>📖 กดเพื่ออ่านประวัติเจาะลึกเพิ่มเติม &rarr;</span>
                     </div>
@@ -142,6 +150,14 @@
                         <h3>{{ sub.name }}</h3>
                     </div>
                     <p>{{ sub.desc }}</p>
+                    <div class="topic-card-actions">
+                        <button class="ai-speech-btn" type="button"
+                                data-title="{{ sub.name }}"
+                                data-full-history="{{ sub.full_history }}"
+                                data-highlights="{% for l in sub.landmarks %}{{ l }}{% if not forloop.last %}||{% endif %}{% endfor %}">
+                            🤖 AI พูด
+                        </button>
+                    </div>
                     <div class="card-action-btn" style="margin-top: 1rem; color: var(--accent);">
                         <span>📌 กดอ่านประวัติและจุดเด่นตำบล &rarr;</span>
                     </div>
@@ -188,10 +204,11 @@
             <button class="modal-close" id="topicModalClose">&times;</button>
             <div class="topic-modal-header">
                 <div class="topic-modal-icon" id="topicIcon">📜</div>
-                <div>
+                <div class="topic-modal-title-wrap">
                     <h3 id="topicTitle">ประวัติเจาะลึก</h3>
                     <span class="topic-badge">📍 นิทรรศการประวัติศาสตร์และสถานที่สำคัญ อำเภอยางชุมน้อย</span>
                 </div>
+                <button class="ai-speech-btn modal-ai-btn" type="button" id="topicSpeakBtn">🤖 AI พูด</button>
             </div>
             <div class="topic-modal-body">
                 <div class="topic-modal-img-wrapper">

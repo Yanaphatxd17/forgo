@@ -1,4 +1,114 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const speakButtons = document.querySelectorAll('.ai-speech-btn');
+    const topicSpeakBtn = document.getElementById('topicSpeakBtn');
+    let activeSpeechButton = null;
+
+    function setSpeechButtonState(button, isSpeaking) {
+        if (!button) return;
+        button.classList.toggle('is-speaking', isSpeaking);
+        if (isSpeaking) {
+            button.innerHTML = '⏸️ หยุด AI';
+        } else {
+            button.innerHTML = '🤖 AI พูด';
+        }
+    }
+
+    function getSpeechText(title, fullHistory, rawHighlights) {
+        const highlights = rawHighlights ? rawHighlights.split('||').map(item => item.trim()).filter(Boolean) : [];
+        const combined = highlights.length ? ` จุดเด่นสำคัญคือ ${highlights.join(', ')}.` : '';
+        return `${title}. ${fullHistory}${combined}`;
+    }
+
+    function speakTopicText(title, fullHistory, rawHighlights, button) {
+        if (!('speechSynthesis' in window)) {
+            alert('เบราว์เซอร์นี้ไม่รองรับฟีเจอร์อ่านเสียง AI กรุณาใช้เบราว์เซอร์ที่รองรับ');
+            return;
+        }
+
+        const text = getSpeechText(title, fullHistory, rawHighlights);
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'th-TH';
+        utterance.rate = 0.95;
+        utterance.pitch = 1;
+
+        const voices = window.speechSynthesis.getVoices();
+        const thaiVoice = voices.find(voice => /th/i.test(voice.lang) || /thai/i.test(voice.name));
+        if (thaiVoice) {
+            utterance.voice = thaiVoice;
+        }
+
+        if (activeSpeechButton && activeSpeechButton !== button) {
+            setSpeechButtonState(activeSpeechButton, false);
+        }
+
+        activeSpeechButton = button || null;
+
+        if (button && button.classList.contains('is-speaking')) {
+            window.speechSynthesis.cancel();
+            setSpeechButtonState(button, false);
+            activeSpeechButton = null;
+            return;
+        }
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+
+        if (button) {
+            setSpeechButtonState(button, true);
+        }
+
+        utterance.onend = () => {
+            if (button) {
+                setSpeechButtonState(button, false);
+            }
+            if (activeSpeechButton === button) {
+                activeSpeechButton = null;
+            }
+        };
+
+        utterance.onerror = () => {
+            if (button) {
+                setSpeechButtonState(button, false);
+            }
+            if (activeSpeechButton === button) {
+                activeSpeechButton = null;
+            }
+        };
+    }
+
+    speakButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const title = button.getAttribute('data-title') || '';
+            const fullHistory = button.getAttribute('data-full-history') || '';
+            const rawHighlights = button.getAttribute('data-highlights') || '';
+            speakTopicText(title, fullHistory, rawHighlights, button);
+        });
+    });
+
+    if (topicSpeakBtn) {
+        topicSpeakBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const title = document.getElementById('topicTitle')?.innerText || '';
+            const fullHistory = document.getElementById('topicFullHistory')?.innerText || '';
+            const rawHighlights = Array.from(document.querySelectorAll('#topicHighlightsList li')).map(li => li.innerText.trim()).join('||');
+            speakTopicText(title, fullHistory, rawHighlights, topicSpeakBtn);
+        });
+    }
+
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = () => {
+            const voices = window.speechSynthesis.getVoices();
+            if (voices.length && activeSpeechButton) {
+                const currentButton = activeSpeechButton;
+                const currentTitle = currentButton.getAttribute('data-title') || document.getElementById('topicTitle')?.innerText || '';
+                const currentText = currentButton.getAttribute('data-full-history') || document.getElementById('topicFullHistory')?.innerText || '';
+                const currentHighlights = currentButton.getAttribute('data-highlights') || Array.from(document.querySelectorAll('#topicHighlightsList li')).map(li => li.innerText.trim()).join('||');
+                speakTopicText(currentTitle, currentText, currentHighlights, currentButton);
+            }
+        };
+    }
+
     // 3D Card Hover Tilt Effect
     const card3D = document.getElementById('card3d');
     if (card3D) {
@@ -118,6 +228,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
+            }
+
+            if (topicSpeakBtn) {
+                topicSpeakBtn.setAttribute('data-title', title);
+                topicSpeakBtn.setAttribute('data-full-history', fullHistory);
+                topicSpeakBtn.setAttribute('data-highlights', rawHighlights);
+                setSpeechButtonState(topicSpeakBtn, false);
             }
 
             if (topicModal) topicModal.classList.add('active');

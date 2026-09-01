@@ -346,6 +346,43 @@ body {
     text-shadow: 0 0 10px var(--primary-glow);
 }
 
+.topic-card-actions {
+    margin: 0 0 1rem;
+}
+
+.ai-speech-btn {
+    border: 1px solid rgba(16, 185, 129, 0.6);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(168, 85, 247, 0.18));
+    color: var(--text-main);
+    border-radius: 999px;
+    padding: 0.7rem 1.1rem;
+    font-family: 'Prompt', 'Kanit', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15);
+}
+
+.ai-speech-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(16, 185, 129, 0.25);
+}
+
+.ai-speech-btn.is-speaking {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.22), rgba(168, 85, 247, 0.24));
+    border-color: rgba(236, 72, 153, 0.8);
+    box-shadow: 0 10px 25px rgba(236, 72, 153, 0.25);
+}
+
+.modal-ai-btn {
+    margin-left: auto;
+}
+
+.topic-modal-title-wrap {
+    flex: 1;
+}
+
 /* Subdistricts Grid with Real Images */
 .subdistricts-grid {
     display: grid;
@@ -638,6 +675,17 @@ body {
     font-size: 1.8rem;
     color: #ffffff;
     line-height: 1.3;
+}
+
+@media (max-width: 640px) {
+    .topic-modal-header {
+        flex-wrap: wrap;
+    }
+
+    .modal-ai-btn {
+        margin-left: 0;
+        width: 100%;
+    }
 }
 
 .topic-badge {
