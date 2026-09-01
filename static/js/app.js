@@ -40,6 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function clearSpeechRestartTimer() {
+        if (lastSpeechTimer) {
+            clearTimeout(lastSpeechTimer);
+            lastSpeechTimer = null;
+        }
+    }
+
     function buildSpeechChunks(text) {
         const cleaned = text.replace(/\s+/g, ' ').trim();
         const sentences = cleaned.split(/(?<=[.!?])\s+/).filter(Boolean);
@@ -79,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setSpeechButtonState(activeSpeechButton, false);
         }
 
+        clearSpeechRestartTimer();
         const sessionToken = ++speechSessionToken;
         activeSpeechButton = button || null;
         window.speechSynthesis.cancel();
@@ -170,11 +178,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!voices.length) return;
             if (activeSpeechButton) {
                 const currentButton = activeSpeechButton;
+                const currentSessionToken = speechSessionToken;
                 const currentTitle = currentButton.getAttribute('data-title') || document.getElementById('topicTitle')?.innerText || '';
                 const currentText = currentButton.getAttribute('data-full-history') || document.getElementById('topicFullHistory')?.innerText || '';
                 const currentHighlights = currentButton.getAttribute('data-highlights') || Array.from(document.querySelectorAll('#topicHighlightsList li')).map(li => li.innerText.trim()).join('||');
+                clearSpeechRestartTimer();
                 lastSpeechTimer = setTimeout(() => {
-                    if (activeSpeechButton === currentButton) {
+                    if (activeSpeechButton === currentButton && currentSessionToken === speechSessionToken) {
                         speakTopicText(currentTitle, currentText, currentHighlights, currentButton);
                     }
                 }, 150);
