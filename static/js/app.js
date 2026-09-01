@@ -2,15 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const speakButtons = document.querySelectorAll('.ai-speech-btn');
     const topicSpeakBtn = document.getElementById('topicSpeakBtn');
     let activeSpeechButton = null;
+    let lastSpeechTimer = null;
 
     function setSpeechButtonState(button, isSpeaking) {
         if (!button) return;
         button.classList.toggle('is-speaking', isSpeaking);
-        if (isSpeaking) {
-            button.innerHTML = '⏸️ หยุด AI';
-        } else {
-            button.innerHTML = '🤖 AI พูด';
-        }
+        button.innerHTML = isSpeaking ? '⏸️ หยุด AI' : '🤖 AI พูด';
     }
 
     function getSpeechText(title, fullHistory, rawHighlights) {
@@ -19,22 +16,39 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${title}. ${fullHistory}${combined}`;
     }
 
+    function resolveThaiVoice() {
+        if (!('speechSynthesis' in window)) return null;
+        const voices = window.speechSynthesis.getVoices();
+        const thaiVoice = voices.find(voice => /th|thai/i.test(voice.lang) || /thai/i.test(voice.name));
+        return thaiVoice || voices[0] || null;
+    }
+
+    function stopSpeech() {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+        if (activeSpeechButton) {
+            setSpeechButtonState(activeSpeechButton, false);
+            activeSpeechButton = null;
+        }
+        if (lastSpeechTimer) {
+            clearTimeout(lastSpeechTimer);
+            lastSpeechTimer = null;
+        }
+    }
+
     function speakTopicText(title, fullHistory, rawHighlights, button) {
         if (!('speechSynthesis' in window)) {
-            alert('เบราว์เซอร์นี้ไม่รองรับฟีเจอร์อ่านเสียง AI กรุณาใช้เบราว์เซอร์ที่รองรับ');
+            alert('เบราว์เซอร์นี้ไม่รองรับข้อความอ่านเสียง AI กรุณาใช้ Chrome หรือ Edge');
             return;
         }
 
         const text = getSpeechText(title, fullHistory, rawHighlights);
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'th-TH';
-        utterance.rate = 0.95;
-        utterance.pitch = 1;
+        const voice = resolveThaiVoice();
 
-        const voices = window.speechSynthesis.getVoices();
-        const thaiVoice = voices.find(voice => /th/i.test(voice.lang) || /thai/i.test(voice.name));
-        if (thaiVoice) {
-            utterance.voice = thaiVoice;
+        if (button && button.classList.contains('is-speaking')) {
+            stopSpeech();
+            return;
         }
 
         if (activeSpeechButton && activeSpeechButton !== button) {
@@ -43,19 +57,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         activeSpeechButton = button || null;
 
-        if (button && button.classList.contains('is-speaking')) {
-            window.speechSynthesis.cancel();
-            setSpeechButtonState(button, false);
-            activeSpeechButton = null;
-            return;
-        }
-
         window.speechSynthesis.cancel();
-        window.speechSynthesis.speak(utterance);
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'th-TH';
+        utterance.rate = 0.96;
+        utterance.pitch = 1.05;
+        utterance.volume = 1;
+
+        if (voice) {
+            utterance.voice = voice;
+        }
 
         if (button) {
             setSpeechButtonState(button, true);
         }
+
+        window.speechSynthesis.speak(utterance);
 
         utterance.onend = () => {
             if (button) {
@@ -99,12 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if ('speechSynthesis' in window) {
         window.speechSynthesis.onvoiceschanged = () => {
             const voices = window.speechSynthesis.getVoices();
-            if (voices.length && activeSpeechButton) {
+            if (!voices.length) return;
+            if (activeSpeechButton) {
                 const currentButton = activeSpeechButton;
                 const currentTitle = currentButton.getAttribute('data-title') || document.getElementById('topicTitle')?.innerText || '';
                 const currentText = currentButton.getAttribute('data-full-history') || document.getElementById('topicFullHistory')?.innerText || '';
                 const currentHighlights = currentButton.getAttribute('data-highlights') || Array.from(document.querySelectorAll('#topicHighlightsList li')).map(li => li.innerText.trim()).join('||');
-                speakTopicText(currentTitle, currentText, currentHighlights, currentButton);
+                lastSpeechTimer = setTimeout(() => {
+                    if (activeSpeechButton === currentButton) {
+                        speakTopicText(currentTitle, currentText, currentHighlights, currentButton);
+                    }
+                }, 150);
             }
         };
     }
