@@ -60,12 +60,17 @@ document.addEventListener('DOMContentLoaded', () => {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'th-TH';
-        utterance.rate = 0.96;
-        utterance.pitch = 1.05;
+        utterance.rate = 0.82;
+        utterance.pitch = 1.1;
         utterance.volume = 1;
 
         if (voice) {
             utterance.voice = voice;
+        }
+
+        if (voice && /th|thai/i.test(voice.lang || voice.name)) {
+            utterance.rate = 0.78;
+            utterance.pitch = 1.15;
         }
 
         if (button) {
